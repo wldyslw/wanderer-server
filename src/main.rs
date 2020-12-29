@@ -8,8 +8,10 @@ extern crate diesel;
 extern crate rocket_contrib;
 extern crate dotenv;
 
+use dotenv::dotenv;
 use rocket_cors::Cors;
 
+pub mod auth;
 pub mod config;
 pub mod db;
 pub mod models;
@@ -21,15 +23,18 @@ fn cors_fairing() -> Cors {
 }
 
 fn main() {
+    dotenv().ok();
     let config = config::get_config();
     rocket::custom(config)
         .mount(
             "/api",
             routes![
                 routes::articles::articles_get,
-                routes::articles::article_get
+                routes::articles::article_get,
+                routes::login::login,
             ],
         )
+        .attach(config::AppState::secret_retriever())
         .attach(db::DBConnection::fairing())
         .attach(cors_fairing())
         .register(catchers![routes::not_found::not_found])
