@@ -16,6 +16,7 @@ pub struct Article {
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
     pub favorites_count: i32,
+    pub author: i32,
 }
 
 /// Represents articles's JSON model sent over network with GET response
@@ -32,10 +33,11 @@ pub struct ArticleJson {
     pub created_at: String,
     pub updated_at: String,
     pub favorites_count: i32,
+    pub author_name: String,
 }
 
-impl Into<ArticleJson> for Article {
-    fn into(self) -> ArticleJson {
+impl Article {
+    pub fn to_json(self, author_name: String) -> ArticleJson {
         ArticleJson {
             id: self.id,
             slug: self.slug,
@@ -46,13 +48,14 @@ impl Into<ArticleJson> for Article {
             tag_list: self.tag_list,
             created_at: self
                 .created_at
-                .format_localized(DATETIME_FORMAT_ARTICLE, Locale::be_BY)
+                .format_localized(DATETIME_FORMAT_ARTICLE, Locale::ru_RU)
                 .to_string(),
             updated_at: self
                 .updated_at
-                .format_localized(DATETIME_FORMAT_ARTICLE, Locale::be_BY)
+                .format_localized(DATETIME_FORMAT_ARTICLE, Locale::ru_RU)
                 .to_string(),
             favorites_count: self.favorites_count,
+            author_name,
         }
     }
 }

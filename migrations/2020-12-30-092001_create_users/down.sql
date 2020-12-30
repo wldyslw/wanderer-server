@@ -1,0 +1,4 @@
+BEGIN;
+ALTER TABLE articles DROP COLUMN author;
+DROP TABLE users;
+COMMIT;
