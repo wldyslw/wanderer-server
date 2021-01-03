@@ -22,12 +22,12 @@ fn cors_fairing() -> Cors {
     Cors::from_options(&Default::default()).expect("CORS fairing cannot be created")
 }
 
-fn main() {
+pub fn main() {
     dotenv().ok();
     let config = config::get_config();
     rocket::custom(config)
         .mount(
-            "/api",
+            "/api/v1",
             routes![
                 routes::articles::articles_get,
                 routes::articles::article_get,

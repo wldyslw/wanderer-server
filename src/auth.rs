@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AuthClaims {
+    pub id: i32, // user id
     pub iat: i64,
     pub exp: i64,
 }

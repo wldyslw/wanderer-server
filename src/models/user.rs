@@ -23,3 +23,9 @@ impl<'a> UserNew<'a> {
         }
     }
 }
+
+#[derive(Deserialize)]
+pub struct UserLoginData {
+    pub username: String,
+    pub password: String,
+}
