@@ -1,0 +1,3 @@
+CREATE user wanderer WITH PASSWORD :pass;
+CREATE DATABASE wanderer;
+GRANT ALL PRIVILEGES ON DATABASE wanderer TO wanderer;
