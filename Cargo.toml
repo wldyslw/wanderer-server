@@ -5,6 +5,9 @@ authors = ["Uladzislau <wldyslw@outlook.com>"]
 license = "GPL-3.0-or-later"
 edition = "2018"
 
+[toolchain]
+channel = "nightly"
+
 [[bin]]
 name = "seed"
 path = "src/seed.rs"
