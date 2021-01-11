@@ -37,15 +37,15 @@ pub struct ArticleJson {
 }
 
 impl Article {
-    pub fn to_json(self, author_name: String) -> ArticleJson {
+    pub fn to_json(&self, author_name: String) -> ArticleJson {
         ArticleJson {
             id: self.id,
-            slug: self.slug,
-            title: self.title,
-            title_image: self.title_image,
-            description: self.description,
-            body: self.body,
-            tag_list: self.tag_list,
+            slug: self.slug.clone(),
+            title: self.title.clone(),
+            title_image: self.title_image.clone(),
+            description: self.description.clone(),
+            body: self.body.clone(),
+            tag_list: self.tag_list.clone(),
             created_at: self
                 .created_at
                 .format_localized(DATETIME_FORMAT_ARTICLE, Locale::ru_RU)
