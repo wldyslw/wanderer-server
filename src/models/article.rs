@@ -97,3 +97,15 @@ impl ArticleNew {
         }
     }
 }
+
+#[derive(Deserialize, AsChangeset)]
+#[table_name = "articles"]
+#[serde(rename_all = "camelCase")]
+pub struct ArticleUpdate {
+    pub slug: Option<String>,
+    pub title: Option<String>,
+    pub title_image: Option<String>,
+    pub description: Option<String>,
+    pub body: Option<String>,
+    pub tag_list: Option<Vec<String>>,
+}

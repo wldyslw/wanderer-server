@@ -39,3 +39,14 @@ pub fn new(
         .values(&article.to_insertable(author_id))
         .get_result::<Article>(connection)
 }
+
+pub fn update(
+    connection: &PgConnection,
+    slug: String,
+    article: ArticleUpdate,
+) -> Result<Article, Error> {
+    let source = articles::table.filter(articles::slug.eq(slug));
+    diesel::update(source)
+        .set(&article)
+        .get_result::<Article>(connection)
+}
