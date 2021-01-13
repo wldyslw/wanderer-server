@@ -1,5 +1,5 @@
 use crate::schema::users;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 #[derive(Queryable)]
 pub struct User {

@@ -1,10 +1,18 @@
 use crate::config::{AppState, TOKEN_PREFIX};
+use chrono::prelude::*;
 use jsonwebtoken as jwt;
 use jwt::{DecodingKey, EncodingKey};
 use rocket::http::Status;
 use rocket::request::{self, FromRequest, Request};
 use rocket::{Outcome, State};
 use serde::{Deserialize, Serialize};
+
+#[derive(Debug)]
+pub enum AuthError {
+    InvalidSecret,
+    InvalidToken,
+    TokenExpired,
+}
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AuthClaims {
@@ -22,14 +30,20 @@ impl AuthClaims {
 }
 
 impl<'a, 'r> FromRequest<'a, 'r> for AuthClaims {
-    type Error = ();
+    type Error = AuthError;
 
     fn from_request(request: &'a Request<'r>) -> request::Outcome<AuthClaims, Self::Error> {
-        let state: State<AppState> = request.guard()?;
-        if let Some(auth) = extract_auth_claims(request, &DecodingKey::from_secret(&state.secret)) {
-            Outcome::Success(auth)
+        let state_outcome = request.guard::<State<AppState>>();
+        if let Some(state) = state_outcome.succeeded() {
+            let claims = extract_auth_claims(request, &DecodingKey::from_secret(&state.secret));
+            let timestamp = Utc::now().timestamp();
+            match claims {
+                Some(auth) if auth.exp > timestamp => Outcome::Success(auth),
+                Some(_) => Outcome::Failure((Status::Forbidden, AuthError::TokenExpired)),
+                _ => Outcome::Failure((Status::Forbidden, AuthError::InvalidToken)),
+            }
         } else {
-            Outcome::Failure((Status::Forbidden, ()))
+            Outcome::Failure((Status::InternalServerError, AuthError::InvalidSecret))
         }
     }
 }
