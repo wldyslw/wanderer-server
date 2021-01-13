@@ -31,6 +31,7 @@ pub fn main() {
             routes![
                 routes::articles::articles_get,
                 routes::articles::article_get,
+                routes::articles::article_create,
                 routes::login::login,
             ],
         )

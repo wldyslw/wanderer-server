@@ -1,5 +1,6 @@
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
+use diesel::result::Error;
 
 use crate::models::article::*;
 use crate::schema::{articles, users};
@@ -27,4 +28,14 @@ pub fn find(connection: &PgConnection, slug: String) -> Option<ArticleJson> {
         .first::<(Article, String)>(connection)
         .ok()?;
     Some(article.to_json(author_name))
+}
+
+pub fn new(
+    connection: &PgConnection,
+    article: ArticleNew,
+    author_id: i32,
+) -> Result<Article, Error> {
+    diesel::insert_into(articles::table)
+        .values(&article.to_insertable(author_id))
+        .get_result::<Article>(connection)
 }
