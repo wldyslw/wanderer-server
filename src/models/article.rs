@@ -74,25 +74,25 @@ pub struct ArticleNew {
 
 #[derive(Insertable)]
 #[table_name = "articles"]
-pub struct ArticleInsertable {
-    pub slug: String,
-    pub title: String,
-    pub title_image: String,
-    pub description: String,
-    pub body: String,
-    pub tag_list: Vec<String>,
+pub struct ArticleInsertable<'a> {
+    pub slug: &'a str,
+    pub title: &'a str,
+    pub title_image: &'a str,
+    pub description: &'a str,
+    pub body: &'a str,
+    pub tag_list: &'a Vec<String>,
     pub author: i32,
 }
 
 impl ArticleNew {
     pub fn to_insertable(&self, author: i32) -> ArticleInsertable {
         ArticleInsertable {
-            slug: self.slug.clone(),
-            title: self.title.clone(),
-            title_image: self.title_image.clone(),
-            description: self.description.clone(),
-            body: self.body.clone(),
-            tag_list: self.tag_list.clone(),
+            slug: &self.slug,
+            title: &self.title,
+            title_image: &self.title_image,
+            description: &self.description,
+            body: &self.body,
+            tag_list: &self.tag_list,
             author,
         }
     }
