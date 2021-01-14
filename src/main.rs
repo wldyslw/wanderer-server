@@ -39,6 +39,6 @@ pub fn main() {
         .attach(config::AppState::secret_retriever())
         .attach(db::DBConnection::fairing())
         .attach(cors_fairing())
-        .register(catchers![routes::not_found::not_found])
+        .register(catchers![routes::catchers::not_found])
         .launch();
 }

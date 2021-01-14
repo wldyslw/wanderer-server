@@ -1,3 +1,3 @@
 pub mod articles;
+pub mod catchers;
 pub mod login;
-pub mod not_found;

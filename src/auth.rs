@@ -32,7 +32,7 @@ impl AuthClaims {
 impl<'a, 'r> FromRequest<'a, 'r> for AuthClaims {
     type Error = AuthError;
 
-    fn from_request(request: &'a Request<'r>) -> request::Outcome<AuthClaims, Self::Error> {
+    fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, Self::Error> {
         let state_outcome = request.guard::<State<AppState>>();
         if let Some(state) = state_outcome.succeeded() {
             let claims = extract_auth_claims(request, &DecodingKey::from_secret(&state.secret));

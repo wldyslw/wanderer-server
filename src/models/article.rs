@@ -1,4 +1,7 @@
 use chrono::prelude::*;
+use rocket::request::Request;
+use rocket::response::{self, Responder};
+use rocket_contrib::json::Json;
 use serde::{Deserialize, Serialize};
 
 use crate::config::DATETIME_FORMAT_ARTICLE;
@@ -23,7 +26,7 @@ pub struct Article {
 /// Represents articles's JSON model sent over network with GET response
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ArticleJson {
+pub struct ArticleGet {
     pub id: i32,
     pub slug: String,
     pub title: String,
@@ -38,8 +41,8 @@ pub struct ArticleJson {
 }
 
 impl Article {
-    pub fn to_json(&self, author_name: String) -> ArticleJson {
-        ArticleJson {
+    pub fn to_json(&self, author_name: String) -> ArticleGet {
+        ArticleGet {
             id: self.id,
             slug: self.slug.clone(),
             title: self.title.clone(),
@@ -61,6 +64,13 @@ impl Article {
     }
 }
 
+impl<'a> Responder<'a> for ArticleGet {
+    fn respond_to(self, req: &Request) -> response::Result<'a> {
+        Json(self).respond_to(req)
+    }
+}
+
+/// Represents article's JSON model sent network in order to create new article
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ArticleNew {
@@ -72,6 +82,7 @@ pub struct ArticleNew {
     pub tag_list: Vec<String>,
 }
 
+/// Represents article's DB model suitable for insertion in DB and creating new article
 #[derive(Insertable)]
 #[table_name = "articles"]
 pub struct ArticleInsertable<'a> {
@@ -98,6 +109,7 @@ impl ArticleNew {
     }
 }
 
+/// Represents both article's JSON and DB models used in the process of updating article
 #[derive(Deserialize, AsChangeset)]
 #[table_name = "articles"]
 #[serde(rename_all = "camelCase")]
