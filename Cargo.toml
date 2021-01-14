@@ -14,8 +14,8 @@ name = "seed"
 path = "src/seed.rs"
 
 [lib]
-name = "wanderer"
-path = "src/main.rs"
+name = "server"
+path = "src/server.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

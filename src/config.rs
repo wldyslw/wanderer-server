@@ -26,6 +26,8 @@ impl AppState {
 }
 
 pub fn get_config() -> Config {
+    let environment = Environment::active().expect("No environment found");
+
     let db_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env file.");
 
     let mut database_config = HashMap::new();
@@ -33,7 +35,7 @@ pub fn get_config() -> Config {
     database_config.insert("url", Value::from(db_url));
     databases.insert("diesel_postgres_pool", Value::from(database_config));
 
-    Config::build(Environment::Development)
+    Config::build(environment)
         .extra("databases", databases)
         .finalize()
         .unwrap()
