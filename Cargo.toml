@@ -9,10 +9,6 @@ default-run = "wanderer-server"
 [toolchain]
 channel = "nightly"
 
-[[bin]]
-name = "seed"
-path = "src/seed.rs"
-
 [lib]
 name = "server"
 path = "src/server.rs"
