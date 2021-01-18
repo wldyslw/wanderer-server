@@ -5,10 +5,6 @@ use rocket::{
 use std::collections::HashMap;
 use std::env;
 
-pub const DATETIME_FORMAT_ARTICLE: &'static str = "%d %B %Y, %H:%M";
-pub const TOKEN_PREFIX: &'static str = "Bearer ";
-pub const TOKEN_EXP: i64 = 30;
-
 pub struct AppState {
     pub secret: Vec<u8>,
 }

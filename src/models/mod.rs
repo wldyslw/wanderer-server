@@ -2,8 +2,10 @@ use rocket::request::Request;
 use rocket::response::{self, Responder};
 use rocket_contrib::json::Json;
 use serde::Serialize;
+
 pub mod article;
 pub mod user;
+pub mod util;
 
 #[derive(Serialize, Debug)]
 pub struct ErrorMessage {

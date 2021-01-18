@@ -1,4 +1,4 @@
-use crate::config::{AppState, TOKEN_PREFIX};
+use crate::{config::AppState, constants::TOKEN_PREFIX};
 use chrono::prelude::*;
 use jsonwebtoken as jwt;
 use jwt::{DecodingKey, EncodingKey};

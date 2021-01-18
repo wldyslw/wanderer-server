@@ -4,8 +4,9 @@ use rocket::response::{self, Responder};
 use rocket_contrib::json::Json;
 use serde::{Deserialize, Serialize};
 
-use crate::config::DATETIME_FORMAT_ARTICLE;
 use crate::schema::articles;
+
+use super::util::locale_string;
 
 /// Represents article's DB model
 #[derive(Queryable)]
@@ -50,14 +51,8 @@ impl Article {
             description: self.description.clone(),
             body: self.body.clone(),
             tag_list: self.tag_list.clone(),
-            created_at: self
-                .created_at
-                .format_localized(DATETIME_FORMAT_ARTICLE, Locale::ru_RU)
-                .to_string(),
-            updated_at: self
-                .updated_at
-                .format_localized(DATETIME_FORMAT_ARTICLE, Locale::ru_RU)
-                .to_string(),
+            created_at: locale_string(self.created_at),
+            updated_at: locale_string(self.updated_at),
             favorites_count: self.favorites_count,
             author_name,
         }

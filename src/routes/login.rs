@@ -4,7 +4,8 @@ use rocket_contrib::json::{Json, JsonValue};
 
 use crate::{
     auth::AuthClaims,
-    config::{AppState, TOKEN_EXP},
+    config::AppState,
+    constants::TOKEN_EXP,
     db::{self, DBConnection},
     models::user::UserLoginData,
 };
