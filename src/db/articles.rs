@@ -8,6 +8,7 @@ pub fn all(connection: &PgConnection) -> Vec<ArticleGet> {
     let articles = articles::table
         .inner_join(users::table)
         .select((articles::all_columns, users::username))
+        .order(articles::created_at.desc())
         .load::<(Article, String)>(connection);
     match articles {
         Ok(a) => a
