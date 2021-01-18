@@ -8,6 +8,7 @@ pub fn all(connection: &PgConnection) -> Vec<ArticleGet> {
     let articles = articles::table
         .inner_join(users::table)
         .select((articles::all_columns, users::username))
+        .filter(articles::is_draft.ne(true))
         .order(articles::created_at.desc())
         .load::<(Article, String)>(connection);
     match articles {
@@ -49,6 +50,15 @@ pub fn update(
     let source = articles::table.filter(articles::slug.eq(slug));
     diesel::update(source)
         .set(&article)
+        .get_result::<Article>(connection)
+        .map(|a| a.populate(connection))
+        .map_err(|e| e.into())
+}
+
+pub fn archive(connection: &PgConnection, slug: String) -> Result<ArticleGet, ErrorMessage> {
+    let article = articles::table.filter(articles::slug.eq(slug));
+    diesel::update(article)
+        .set(articles::is_draft.eq(true))
         .get_result::<Article>(connection)
         .map(|a| a.populate(connection))
         .map_err(|e| e.into())

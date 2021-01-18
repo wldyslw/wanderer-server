@@ -1,0 +1,9 @@
+BEGIN;
+ALTER TABLE articles
+ADD COLUMN is_draft BOOLEAN DEFAULT FALSE;
+UPDATE articles
+SET is_draft = FALSE;
+ALTER TABLE articles
+ALTER COLUMN is_draft
+SET NOT NULL;
+COMMIT;

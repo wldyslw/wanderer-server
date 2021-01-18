@@ -11,6 +11,7 @@ table! {
         updated_at -> Timestamptz,
         favorites_count -> Int4,
         author -> Int4,
+        is_draft -> Bool,
     }
 }
 

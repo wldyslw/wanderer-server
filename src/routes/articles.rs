@@ -34,3 +34,13 @@ pub fn article_update(
 ) -> Result<ArticleGet, ErrorMessage> {
     db::articles::update(&connection, slug, article.into_inner())
 }
+
+#[put("/articles/<slug>/archive")]
+pub fn article_archive(
+    connection: DBConnection,
+    _auth_claims: AuthClaims,
+    slug: String,
+) -> Result<ArticleGet, ErrorMessage> {
+    // TODO: raise an error if article is already in archive
+    db::articles::archive(&connection, slug)
+}

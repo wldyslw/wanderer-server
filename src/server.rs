@@ -34,6 +34,7 @@ pub fn run() {
                 routes::articles::article_get,
                 routes::articles::article_create,
                 routes::articles::article_update,
+                routes::articles::article_archive,
                 routes::login::login,
             ],
         )
