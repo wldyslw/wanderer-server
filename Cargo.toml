@@ -6,9 +6,6 @@ license = "GPL-3.0-or-later"
 edition = "2018"
 default-run = "wanderer-server"
 
-[toolchain]
-channel = "nightly"
-
 [lib]
 name = "server"
 path = "src/server.rs"

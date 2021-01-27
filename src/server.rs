@@ -19,6 +19,8 @@ pub mod models;
 pub mod routes;
 pub mod schema;
 
+use constants::API_V1_BASE_PATH;
+
 fn cors_fairing() -> Cors {
     Cors::from_options(&Default::default()).expect("CORS fairing cannot be created")
 }
@@ -28,14 +30,14 @@ pub fn run() {
     let config = config::get_config();
     rocket::custom(config)
         .mount(
-            "/api/v1",
+            API_V1_BASE_PATH,
             routes![
                 routes::articles::articles_get,
                 routes::articles::article_get,
                 routes::articles::article_create,
                 routes::articles::article_update,
                 routes::articles::article_archive,
-                routes::auth::login,
+                routes::auth::auth,
             ],
         )
         .attach(config::AppState::secret_retriever())

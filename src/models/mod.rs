@@ -15,9 +15,9 @@ pub struct ErrorMessage {
 }
 
 impl ErrorMessage {
-    pub fn new(message: String, description: String) -> Self {
+    pub fn new(code: i32, message: String, description: String) -> Self {
         ErrorMessage {
-            code: Default::default(),
+            code,
             message,
             description,
         }

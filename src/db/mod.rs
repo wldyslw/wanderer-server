@@ -11,6 +11,6 @@ pub struct DBConnection(diesel::PgConnection);
 
 impl From<Error> for ErrorMessage {
     fn from(err: Error) -> ErrorMessage {
-        ErrorMessage::new(err.to_string(), err.to_string())
+        ErrorMessage::new(i32::default(), err.to_string(), err.to_string())
     }
 }
