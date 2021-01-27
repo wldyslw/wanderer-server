@@ -1,5 +1,5 @@
 use diesel::result::Error;
-use rocket_contrib::databases::diesel;
+use rocket_contrib::databases::{database, diesel};
 
 use crate::models::ErrorMessage;
 

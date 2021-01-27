@@ -4,9 +4,6 @@
 extern crate rocket;
 #[macro_use]
 extern crate diesel;
-#[macro_use]
-extern crate rocket_contrib;
-extern crate dotenv;
 
 use dotenv::dotenv;
 use rocket_cors::Cors;
