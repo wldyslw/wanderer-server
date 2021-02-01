@@ -34,7 +34,8 @@ pub fn run() {
                 routes::articles::article_create,
                 routes::articles::article_update,
                 routes::articles::article_archive,
-                routes::auth::auth,
+                routes::auth::sign_in,
+                routes::auth::sign_out,
             ],
         )
         .attach(config::AppState::secret_retriever())

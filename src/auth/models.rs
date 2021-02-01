@@ -8,7 +8,7 @@ use uuid::Uuid;
 use crate::{constants::AUTH_COOKIE_NAME, models::ErrorMessage};
 
 use super::{
-    db::{drop as drop_session, find as find_session, store as store_session, RedisConnection},
+    db::{drop_session, find_session, store_session, RedisConnection},
     utils::set_auth_cookie,
 };
 

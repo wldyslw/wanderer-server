@@ -16,6 +16,10 @@ pub fn set_auth_cookie(cookies: &mut Cookies, session: &Session) {
     cookies.add(cookie);
 }
 
+pub fn remove_auth_cookie(cookies: &mut Cookies) {
+    cookies.remove(Cookie::named(AUTH_COOKIE_NAME));
+}
+
 pub fn get_session_key(session_id: &str) -> String {
     format!("session:{}", session_id)
 }
