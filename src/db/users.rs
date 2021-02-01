@@ -4,9 +4,13 @@ use diesel::result::Error;
 use scrypt::{scrypt_check, scrypt_simple, ScryptParams};
 use std::fmt;
 
-use crate::models::user::{User, UserNew};
+use crate::models::{
+    user::{User, UserGet, UserNew},
+    ErrorMessage,
+};
 use crate::schema::users;
 
+#[derive(Debug)]
 pub enum LoginError {
     InvalidUsername,
     InvalidPassword,
@@ -22,6 +26,12 @@ impl fmt::Display for LoginError {
     }
 }
 
+impl From<LoginError> for ErrorMessage {
+    fn from(error: LoginError) -> Self {
+        ErrorMessage::new(i32::default(), error.to_string(), String::from(""))
+    }
+}
+
 pub fn create(c: &PgConnection, username: String, password: String) -> Result<User, Error> {
     let hash = scrypt_simple(
         &password,
@@ -34,7 +44,7 @@ pub fn create(c: &PgConnection, username: String, password: String) -> Result<Us
         .get_result::<User>(c)
 }
 
-pub fn login(c: &PgConnection, username: &str, password: &str) -> Result<User, LoginError> {
+pub fn login(c: &PgConnection, username: &str, password: &str) -> Result<UserGet, ErrorMessage> {
     let result = users::table
         .filter(users::username.eq(username))
         .get_result::<User>(c)
@@ -43,10 +53,10 @@ pub fn login(c: &PgConnection, username: &str, password: &str) -> Result<User, L
     if let Some(user) = result {
         let password_matches = scrypt_check(password, &user.password_hash).ok();
         match password_matches {
-            Some(_) => Ok(user),
-            None => Err(LoginError::InvalidPassword),
+            Some(_) => Ok(user.into()),
+            None => Err(LoginError::InvalidPassword.into()),
         }
     } else {
-        Err(LoginError::InvalidUsername)
+        Err(LoginError::InvalidUsername.into())
     }
 }

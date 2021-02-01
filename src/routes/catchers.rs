@@ -1,5 +1,5 @@
 use rocket::Request;
-use rocket_contrib::json::JsonValue;
+use rocket_contrib::{json, json::JsonValue};
 
 // TODO: supply more info in catchers
 

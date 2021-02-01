@@ -13,7 +13,8 @@ rustup install nightly
 
 # create .env file with required variables (replace values below with your own)
 
-echo "DATABASE_URL=postgres://wanderer:YOUR_PASSWORD@localhost/wanderer
+echo "POSTGRES_URL=postgres://wanderer:YOUR_PASSWORD@localhost/wanderer
+     REDIS_URL=redis://wanderer:YOUR_PASSWORD@localhost/wanderer
      SECRET_KEY=b05f1470-bdf8-422a-bd82-45142bb46548
      ADMIN_PASSWORD=12345678" > .env
 

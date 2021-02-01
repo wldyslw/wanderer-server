@@ -1,11 +1,36 @@
-use crate::schema::users;
-use serde::Deserialize;
+use rocket::request::Request;
+use rocket::response::{self, Responder};
+use rocket_contrib::json::Json;
+use serde::{Deserialize, Serialize};
 
-#[derive(Queryable)]
+use crate::schema::users;
+
+#[derive(Debug, Queryable)]
 pub struct User {
     pub id: i32,
     pub username: String,
     pub password_hash: String,
+}
+
+#[derive(Serialize)]
+pub struct UserGet {
+    pub id: i32,
+    pub username: String,
+}
+
+impl From<User> for UserGet {
+    fn from(user: User) -> Self {
+        UserGet {
+            id: user.id,
+            username: user.username.clone(),
+        }
+    }
+}
+
+impl<'a> Responder<'a> for UserGet {
+    fn respond_to(self, req: &Request) -> response::Result<'a> {
+        Json(self).respond_to(req)
+    }
 }
 
 #[derive(Insertable)]
