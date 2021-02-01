@@ -1,7 +1,7 @@
 use rocket_contrib::json::Json;
 
 use crate::{
-    auth::AuthClaims,
+    auth::Auth,
     db::{self, DBConnection},
     models::{article::*, ErrorMessage},
 };
@@ -19,28 +19,34 @@ pub fn article_get(connection: DBConnection, slug: String) -> Result<ArticleGet,
 #[post("/articles", format = "json", data = "<article>")]
 pub fn article_create(
     connection: DBConnection,
-    auth_claims: AuthClaims,
+    auth: Auth,
     article: Json<ArticleNew>,
 ) -> Result<ArticleGet, ErrorMessage> {
-    db::articles::new(&connection, article.into_inner(), auth_claims.id)
+    db::articles::new(&connection, article.into_inner(), auth?.user_id)
 }
 
 #[put("/articles/<slug>", format = "json", data = "<article>")]
 pub fn article_update(
     connection: DBConnection,
-    _auth_claims: AuthClaims,
+    auth: Auth,
     slug: String,
     article: Json<ArticleUpdate>,
 ) -> Result<ArticleGet, ErrorMessage> {
-    db::articles::update(&connection, slug, article.into_inner())
+    match auth {
+        Ok(_) => db::articles::update(&connection, slug, article.into_inner()),
+        Err(e) => Err(e.into()),
+    }
 }
 
 #[put("/articles/<slug>/archive")]
 pub fn article_archive(
     connection: DBConnection,
-    _auth_claims: AuthClaims,
+    auth: Auth,
     slug: String,
 ) -> Result<ArticleGet, ErrorMessage> {
     // TODO: raise an error if article is already in archive
-    db::articles::archive(&connection, slug)
+    match auth {
+        Ok(_) => db::articles::archive(&connection, slug),
+        Err(e) => Err(e.into()),
+    }
 }

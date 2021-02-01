@@ -1,8 +1,9 @@
-use crate::schema::users;
 use rocket::request::Request;
 use rocket::response::{self, Responder};
 use rocket_contrib::json::Json;
 use serde::{Deserialize, Serialize};
+
+use crate::schema::users;
 
 #[derive(Debug, Queryable)]
 pub struct User {

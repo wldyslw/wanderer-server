@@ -39,6 +39,7 @@ pub fn run() {
         )
         .attach(config::AppState::secret_retriever())
         .attach(db::DBConnection::fairing())
+        .attach(auth::RedisConnection::fairing())
         .attach(cors_fairing())
         .register(catchers![routes::catchers::not_found])
         .launch();
