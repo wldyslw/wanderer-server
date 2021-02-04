@@ -1,25 +1,6 @@
-use rocket::{
-    config::{Config, Environment, Value},
-    fairing::AdHoc,
-};
+use rocket::config::{Config, Environment, Value};
 use std::collections::HashMap;
 use std::env;
-
-pub struct AppState {
-    pub secret: Vec<u8>,
-}
-
-impl AppState {
-    pub fn secret_retriever() -> AdHoc {
-        AdHoc::on_attach("Secret retriever", |rocket| {
-            let secret = env::var("SECRET_KEY")
-                .expect("SECRET_KEY environment variable must be set.")
-                .into_bytes();
-
-            Ok(rocket.manage(AppState { secret }))
-        })
-    }
-}
 
 pub fn get_config() -> Config {
     let environment = Environment::active().expect("No environment found");

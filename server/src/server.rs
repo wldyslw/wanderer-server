@@ -23,7 +23,7 @@ fn cors_fairing() -> Cors {
 }
 
 pub fn run() {
-    dotenv().ok();
+    // dotenv().ok();
     let config = config::get_config();
     rocket::custom(config)
         .mount(
@@ -38,7 +38,6 @@ pub fn run() {
                 routes::auth::sign_out,
             ],
         )
-        .attach(config::AppState::secret_retriever())
         .attach(db::DBConnection::fairing())
         .attach(auth::RedisConnection::fairing())
         .attach(cors_fairing())
