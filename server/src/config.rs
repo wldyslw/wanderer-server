@@ -6,7 +6,7 @@ pub fn get_config() -> Config {
     let environment = Environment::active().expect("No environment found");
 
     let postgres_url =
-        env::var("POSTGRES_URL").expect("POSTGRES_URL environment variable must be set.");
+        env::var("DATABASE_URL").expect("DATABASE_URL environment variable must be set.");
     let redis_url = env::var("REDIS_URL").expect("REDIS_URL environment variable must be set.");
 
     let mut postgres_config = HashMap::new();
@@ -20,6 +20,7 @@ pub fn get_config() -> Config {
     databases.insert("redis_pool", Value::from(redis_config));
 
     Config::build(environment)
+        .address("0.0.0.0")
         .extra("databases", databases)
         .finalize()
         .unwrap()

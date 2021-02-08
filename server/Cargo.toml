@@ -25,6 +25,7 @@ serde_json = "1.0.60"
 scrypt = "0.5.0"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 redis = "0.19.0"
+diesel_migrations = "1.4.0"
 
 [dependencies.rocket_contrib]
 version = "0.4.6"

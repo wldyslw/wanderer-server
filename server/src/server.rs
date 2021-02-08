@@ -5,7 +5,6 @@ extern crate rocket;
 #[macro_use]
 extern crate diesel;
 
-use dotenv::dotenv;
 use rocket_cors::Cors;
 
 pub mod auth;
@@ -23,7 +22,6 @@ fn cors_fairing() -> Cors {
 }
 
 pub fn run() {
-    // dotenv().ok();
     let config = config::get_config();
     rocket::custom(config)
         .mount(
