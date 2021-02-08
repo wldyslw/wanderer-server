@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  db:
+    build: ./db
+    environment:
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+      - 5433:5433
+
+  cache:
+    image: redis:6
+    volumes:
+      - cache_data:/var/lib/redis
+    ports:
+      - 6379:6379
+
+  server:
+    environment:
+      DATABASE_URL: postgres://wanderer:${POSTGRES_PASSWORD}@db/wanderer
+      REDIS_URL: redis://cache:6379
+      ADMIN_PASSWORD: '${ADMIN_PASSWORD}'
+    build: ./server
+    command: [./server/start.sh]
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+    depends_on:
+      - cache
+      - db
+
+volumes:
+  pg_data:
+  cache_data:
