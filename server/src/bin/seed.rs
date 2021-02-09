@@ -23,7 +23,7 @@ fn create_admin_user(c: &PgConnection) {
             Error::DatabaseError(DatabaseErrorKind::UniqueViolation, _) => {
                 println!("Admin user already exists, skipping.")
             }
-            _ => panic!(e),
+            _ => eprintln!("Database error occured: {}", e.to_string()),
         }
     } else {
         println!("Default user created.")
