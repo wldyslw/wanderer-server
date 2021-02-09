@@ -9,8 +9,10 @@ Project requires Docker.
 ```bash
 # create .env file with required variables (replace values below with your own)
 # ADMIN_USERNAME is optional, default value is "Admin"
+# ROCKET_ENV is also optional, default value is "dev"
 
-echo "POSTGRES_PASSWORD=12345678 \
+echo "ROCKET_ENV=prod \
+POSTGRES_PASSWORD=12345678 \
 ADMIN_USERNAME=\"John Doe\" \
 ADMIN_PASSWORD=12345678" > .env
 
