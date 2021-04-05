@@ -37,8 +37,8 @@ pub fn sign_in(
 #[post("/sign-out")]
 pub fn sign_out(
     redis_connection: RedisConnection,
-    mut cookies: Cookies,
     auth: Auth,
+    mut cookies: Cookies,
 ) -> Result<(), ErrorMessage> {
     remove_auth_cookie(&mut cookies);
     drop_session(&redis_connection, &auth?.id);
