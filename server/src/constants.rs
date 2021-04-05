@@ -1,5 +1,9 @@
 // routing
 pub const API_V1_BASE_PATH: &'static str = "/api/v1";
+pub const STATIC_FILES_BASE_PATH: &'static str = "/static";
+
+// upload related
+pub const MAX_IMAGE_SIZE_BYTES: u64 = 10 * 1024 * 1024;
 
 // time units
 const MINUTE: i32 = 60; // secs

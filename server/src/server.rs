@@ -5,6 +5,7 @@ extern crate rocket;
 #[macro_use]
 extern crate diesel;
 
+use rocket_contrib::serve::{Options, StaticFiles};
 use rocket_cors::Cors;
 
 pub mod auth;
@@ -15,7 +16,7 @@ pub mod models;
 pub mod routes;
 pub mod schema;
 
-use constants::API_V1_BASE_PATH;
+use constants::{API_V1_BASE_PATH, STATIC_FILES_BASE_PATH};
 
 fn cors_fairing() -> Cors {
     Cors::from_options(&Default::default()).expect("CORS fairing cannot be created")
@@ -34,11 +35,22 @@ pub fn run() {
                 routes::articles::article_archive,
                 routes::auth::sign_in,
                 routes::auth::sign_out,
+                routes::uploads::upload_post,
             ],
+        )
+        .mount(
+            STATIC_FILES_BASE_PATH,
+            StaticFiles::new(
+                concat!(env!("CARGO_MANIFEST_DIR", ".."), "/static"),
+                Options::NormalizeDirs | Options::Index,
+            ),
         )
         .attach(db::DBConnection::fairing())
         .attach(auth::RedisConnection::fairing())
         .attach(cors_fairing())
-        .register(catchers![routes::catchers::not_found])
+        .register(catchers![
+            routes::catchers::not_found,
+            routes::catchers::forbidden,
+        ])
         .launch();
 }
