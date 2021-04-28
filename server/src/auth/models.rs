@@ -5,7 +5,7 @@ use rocket::request::{self, FromRequest, Request};
 use rocket::Outcome;
 use uuid::Uuid;
 
-use crate::{constants::AUTH_COOKIE_NAME, models::ErrorMessage};
+use crate::{constants::SESSION_TOKEN_COOKIE_NAME, models::ErrorMessage};
 
 use super::{
     db::{drop_session, find_session, store_session, RedisConnection},
@@ -64,7 +64,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for Session {
         let connection_outcome = request.guard::<RedisConnection>();
         if let Some(connection) = connection_outcome.succeeded() {
             let mut cookies = request.cookies();
-            if let Some(cookie) = cookies.get(AUTH_COOKIE_NAME) {
+            if let Some(cookie) = cookies.get(SESSION_TOKEN_COOKIE_NAME) {
                 match find_session(&connection, cookie.value()) {
                     Ok(session) => {
                         drop_session(&connection, &session.id);

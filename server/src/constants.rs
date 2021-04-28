@@ -11,7 +11,8 @@ const HOUR: i32 = 60 * MINUTE;
 const DAY: i32 = 24 * HOUR;
 
 // auth related
-pub const AUTH_COOKIE_NAME: &'static str = "session_token";
+pub const SESSION_TOKEN_COOKIE_NAME: &'static str = "session_token";
+pub const IS_AUTHORIZED_COOKIE_NAME: &'static str = "is_authorized";
 pub const ACCESS_TOKEN_EXP: i64 = (15 * DAY) as i64;
 
 // chrono display related
